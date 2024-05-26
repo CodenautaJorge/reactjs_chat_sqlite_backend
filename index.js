@@ -6,6 +6,7 @@ import cors from "cors";
 import bcrypt from "bcrypt";
 import 'dotenv/config';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 //Creamos un servidor http para vincularlo a socket.io y poder establecer una comunicación a tiempo real.
 
@@ -17,6 +18,8 @@ app.use(cors());
 app.use(express.json());
 
 // Abrir la conexión a la base de datos
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const db = new sqlite3.Database(path.resolve(__dirname, "chat.db"));
 
 // Crear una tabla para almacenar las salas si no existe
