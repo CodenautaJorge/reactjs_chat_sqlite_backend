@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // Abrir la conexión a la base de datos
-const db = new sqlite3.Database("chat.db");
+const db = new sqlite3.Database(path.resolve(__dirname, "chat.db"));
 
 // Crear una tabla para almacenar las salas si no existe
 db.run(
