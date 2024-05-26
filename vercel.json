@@ -22,9 +22,5 @@
       "src": "/api/login",
       "dest": "./index.js"
     },
-    {
-      "src": "/(.*)",
-      "dest": "./index.js"
-    }
   ]
 }
