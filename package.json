@@ -8,13 +8,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  
-  "builds": [
-    {
-      "src": "package.json", 
-      "use": "vercel-sapper"
-    }
-  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
