@@ -7,8 +7,24 @@
   ],
   "routes": [
     {
+      "src": "/api/chatrooms",
+      "dest": "./index.js"
+    },
+    {
+      "src": "/api/messages",
+      "dest": "./index.js"
+    },
+    {
+      "src": "/api/saveuser",
+      "dest": "./index.js"
+    },
+    {
+      "src": "/api/login",
+      "dest": "./index.js"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/index.js"
+      "dest": "./index.js"
     }
   ]
 }
