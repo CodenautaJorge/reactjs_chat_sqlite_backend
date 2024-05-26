@@ -5,6 +5,7 @@ import sqlite3 from "sqlite3";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import 'dotenv/config';
+import fs from 'fs';
 
 //Creamos un servidor http para vincularlo a socket.io y poder establecer una comunicación a tiempo real.
 
