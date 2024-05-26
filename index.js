@@ -159,5 +159,6 @@ app.post("/api/login", async (req, res) => {
   );
 });
 
-server.listen(PORT);
-console.log("Server listening on port: " + PORT);
+app.listen(PORT, () => {
+  console.log(`port runing in http://localhost:${PORT}`);
+}); 
