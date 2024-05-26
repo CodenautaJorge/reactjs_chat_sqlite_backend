@@ -8,7 +8,7 @@ import 'dotenv/config'
 
 //Creamos un servidor http para vincularlo a socket.io y poder establecer una comunicación a tiempo real.
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
 const app = express();
 const server = http.createServer(app);
 
