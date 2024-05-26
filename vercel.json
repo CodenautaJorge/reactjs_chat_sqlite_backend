@@ -1,26 +1,26 @@
 {
   "builds": [
     {
-      "src": "./index.js",
+      "src": "/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/chatrooms",
-      "dest": "./index.js"
+      "dest": "/index.js"
     },
     {
       "src": "/api/messages",
-      "dest": "./index.js"
+      "dest": "/index.js"
     },
     {
       "src": "/api/saveuser",
-      "dest": "./index.js"
+      "dest": "/index.js"
     },
     {
       "src": "/api/login",
-      "dest": "./index.js"
+      "dest": "/index.js"
     },
   ]
 }
