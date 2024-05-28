@@ -120,6 +120,19 @@ app.get("/api/messages", (req, res) => {
 // Ruta para guardar un usuario
 app.post("/api/saveuser", async (req, res) => {
   const { username, email, password } = req.body;
+
+  //Comprobamos si ya existe en usuario
+  const checkSql = 'SELECT COUNT(*) as count FROM users WHERE username = ? OR email = ?';
+  db.get(checkSql, [username, email], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (row.count > 0) {
+      return res.status(409).json({ error: 'Ya existe un usuario con ese email o nombre' });
+    }
+  });
+  
   const hashedPassword = await bcrypt.hash(password, 10);
   db.run(
     "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
