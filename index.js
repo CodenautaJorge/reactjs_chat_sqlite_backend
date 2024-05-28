@@ -4,8 +4,7 @@ import { Server as SocketServer } from "socket.io";
 import sqlite3 from "sqlite3";
 import cors from "cors";
 import bcrypt from "bcrypt";
-import 'dotenv/config';
-import fs from 'fs';
+import "dotenv/config";
 
 //Creamos un servidor http para vincularlo a socket.io y poder establecer una comunicación a tiempo real.
 
@@ -17,17 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // Abrir la conexión a la base de datos
-
-// Verificar si el archivo de la base de datos existe
-if (!fs.existsSync("chat.db")) {
-  var db = new sqlite3.Database("chat.db", (err) => {
-        if (err) {
-            console.error('Error al abrir la base de datos:', err.message);
-            return;
-        }
-        console.log('Base de datos SQLite creada exitosamente.');
-  })
-}
+const db = new sqlite3.Database("chat_db.db");
 
 // Crear una tabla para almacenar las salas si no existe
 db.run(
@@ -102,7 +91,6 @@ io.on("connection", (socket) => {
       }
     );
   });
-
 });
 
 //Función para devolver las salas a los clientes
@@ -148,28 +136,40 @@ app.post("/api/saveuser", async (req, res) => {
 // Ruta para iniciar sesión
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
-  db.get(
-    "SELECT * FROM users WHERE email = ?", [email], async (err, row) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      if (!row) {
-        return res.status(401).json({ error: "Usuario no encontrado" });
-      }
-      try {
-        if (await bcrypt.compare(password, row.password)) {
-          return res.json({ success: "Inicio de sesión correcto", username: row.username });
-        } else {
-          return res.status(401).json({ error: "Contraseña incorrecta" });
-        }
-      } catch (error) {
-        console.error("Error al comparar contraseñas:", error);
-        return res.status(500).json({ error: "Error al iniciar sesión" });
-      }
+  db.get("SELECT * FROM users WHERE email = ?", [email], async (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
     }
-  );
+    if (!row) {
+      return res.status(401).json({ error: "Usuario no encontrado" });
+    }
+    try {
+      if (await bcrypt.compare(password, row.password)) {
+        return res.json({
+          success: "Inicio de sesión correcto",
+          username: row.username,
+        });
+      } else {
+        return res.status(401).json({ error: "Contraseña incorrecta" });
+      }
+    } catch (error) {
+      console.error("Error al comparar contraseñas:", error);
+      return res.status(500).json({ error: "Error al iniciar sesión" });
+    }
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`port runing in http://localhost:${PORT}`);
-}); 
+//Ruta para eliminar un mensaje
+app.post("/api/deletemessage", async (req, res) => {
+  const { id } = req.body;
+
+  db.run("DELETE FROM messages WHERE id = ?", [id], function (err) {
+    if (err) {
+      return res.status(500).json({ error: "Error al eliminar el mensaje" });
+    }
+    res.json({ success: "Mensaje eliminado con éxito" });
+  });
+});
+
+server.listen(PORT);
+console.log("Server listening on port: " + PORT);
